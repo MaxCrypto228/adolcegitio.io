@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Be My Valentine?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="hearts" id="hearts"></div>
+
+    <div class="card" id="card">
+      <div class="glow"></div>
+
+      <div class="hero">
+        <div class="badge">💌 Я і так знаю, шо в нас не буде прям сьогодні вина і свічок. Але ....</div>
+        <h1>Соля, ти будеш Максіковою хлібобулочною Валентинкою? 💖</h1>
+        <p>
+           Я знаю ти в ахуї, але зато будеш знати, що зі мною часто стаються приємні несподіванки - ну так чисто, щоб не розслаблятись🤪
+        </p>
+
+        <div class="buttons" id="buttons">
+          <button class="btn btn-yes" id="yesBtn">Макс.... для тебе тільки так 🙈💘</button>
+          <button class="btn btn-no" id="noBtn">Ні! Ти не вмієш готувати деруни 💀</button>
+        </div>
+
+        <div class="small">P.S Дві кнопки доступні для нажимання.......</div>
+
+        <div class="footer">
+          <span>Не зря ШАГ був 😂</span>
+          <span><a class="link" href="#" id="reset">Скинути</a></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Floating hearts background
+    const hearts = document.getElementById("hearts");
+    const makeHeart = () => {
+      const h = document.createElement("div");
+      h.className = "heart";
+      const left = Math.random() * 100;
+      const dur = 6 + Math.random() * 6;
+      const size = 0.7 + Math.random() * 1.8;
+      h.style.left = left + "vw";
+      h.style.animationDuration = dur + "s";
+      h.style.setProperty("--s", size);
+      h.style.background = Math.random() > 0.5 ? "rgba(255,77,141,.65)" : "rgba(124,58,237,.55)";
+      hearts.appendChild(h);
+      setTimeout(() => h.remove(), dur * 1000);
+    };
+    setInterval(makeHeart, 220);
+    for(let i=0;i<14;i++) setTimeout(makeHeart, i*120);
+
+    // The "No" button dodges
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const buttons = document.getElementById("buttons");
+    const reset = document.getElementById("reset");
+
+    let dodgeLevel = 0;
+
+    function moveNoButton() {
+      dodgeLevel++;
+      const rect = buttons.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      const maxX = rect.width - btnRect.width;
+      const maxY = 160; // keep it near buttons row
+      const x = Math.max(0, Math.min(maxX, Math.random() * (maxX + 1)));
+      const y = Math.max(-10, Math.min(maxY, (Math.random() * (maxY + 1)) - 10));
+
+      noBtn.style.position = "relative";
+      noBtn.style.left = x + "px";
+      noBtn.style.top = y + "px";
+
+      if (dodgeLevel === 4) noBtn.textContent = "Ну камон… 😑";
+      if (dodgeLevel === 7) noBtn.textContent = "АЛООО!";
+      if (dodgeLevel === 10) noBtn.textContent = "Та я навчусь!!!😭";
+      if (dodgeLevel >= 12) {
+        noBtn.textContent = "Піздєц....";
+        noBtn.style.opacity = "0.75";
+      }
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+
+    yesBtn.addEventListener("click", () => {
+      window.location.href = "yes.html";
+    });
+
+    reset.addEventListener("click", (e) => {
+      e.preventDefault();
+      dodgeLevel = 0;
+      noBtn.textContent = "Ноу 🙈";
+      noBtn.style.left = "0px";
+      noBtn.style.top = "0px";
+      noBtn.style.opacity = "1";
+    });
+  </script>
+</body>
+</html>
